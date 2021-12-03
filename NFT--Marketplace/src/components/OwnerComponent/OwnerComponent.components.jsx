@@ -127,7 +127,7 @@ class OwnerComponent extends React.Component
                         <Form onSubmit={this.handleSaleSubmit}>
                             <Form.Group className="mb-3" controlId="formBasicEmail">
                                 <Form.Label><span style={{fontWeight:"bold"}}>Selling Price(wei)</span></Form.Label>
-                                <Form.Control type="number" placeholder="Enter Selling Price in wei" onChange={this.handlechange}/>
+                                <Form.Control type="number" placeholder="Enter Selling Price in wei" min="1" onChange={this.handlechange}/>
                                 <Form.Text className="text-muted">
                                 Buyer will pay these wei into your marketplace account
                                 </Form.Text>
