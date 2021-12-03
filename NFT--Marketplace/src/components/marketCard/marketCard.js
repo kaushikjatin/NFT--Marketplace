@@ -61,7 +61,7 @@ const MyTooltip = withStyles((theme) => ({
   tooltip: {fontSize: 20},
 }))(Tooltip);
 
-const MarketCard = ({name,cid,isOnSale,sellPrice,isBiddable,maxBid,index}) => {
+const MarketCard = ({name,cid,sellPrice,isBiddable,maxBid,index}) => {
   const classes = useStyles();
   
   const [state, setState] = React.useState([{
@@ -151,7 +151,7 @@ const MarketCard = ({name,cid,isOnSale,sellPrice,isBiddable,maxBid,index}) => {
                     />
                     <MyTooltip title={window.web3.utils.fromWei(sellPrice.toString())} arrow>
                       <Typography variant="caption">
-                        Price: {isOnSale ? sellPrice + " Ξ" : "-"}
+                        Price: {sellPrice!=0 ? sellPrice + " Ξ" : "-"}
                       </Typography>
                     </MyTooltip>
                   </div>

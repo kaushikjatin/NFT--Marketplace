@@ -1,7 +1,7 @@
 import React from "react";
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
-import Stack from 'react-bootstrap/Stack'
+import { Accordion } from "react-bootstrap";
 import './ViewerComponent.styles.scss'
 
 class ViewerComponent extends React.Component
@@ -47,7 +47,7 @@ class ViewerComponent extends React.Component
     handleBuyItem= async (event)=>{
         event.preventDefault();
         this.props.handlestateofApp("spinner",true);
-        let Data=await this.state.contract.methods.buyFromSale(this.state.data.token_id).send({ from:this.state.account , value:this.state.data.sellPrice+1});
+        let Data=await this.state.contract.methods.buyFromSale(this.state.data.token_id).send({ from:this.state.account , value:this.state.data.sellPrice});
         Data=Data.events.nftTransaction.returnValues["nfts"]
         this.props.handlestateofApp("data",Data);
     }
@@ -55,14 +55,26 @@ class ViewerComponent extends React.Component
 
     render()
     {
-        if(this.state.data.isOnSale)
+        if(this.state.data.sellPrice!=0)
         {
             return(
                 <div className="bg-light border">
-                          <Stack direction="horizontal" gap={3}>
-                                <div>{this.state.data.sellPrice} wei</div>
-                                <Button variant="secondary" className="ms-auto" onClick={this.handleBuyItem}>Buy Item</Button>
-                          </Stack>
+                           <Accordion defaultActiveKey="0">
+                            <Accordion.Item eventKey="0">
+                            <Accordion.Header>Sale Info</Accordion.Header>
+                            <Accordion.Body style={{"height":"150px"}}>
+                                <div style={{"fontSize":"15px" ,"color":"grey"}}>Sell Price</div>
+                                <div style={{"fontSize":"25px" }}>{this.props.data.sellPrice} wei</div>
+                                <Button variant="primary" className="ms-auto" onClick={this.handleBuyItem} style={{"width":"80%"}}>Buy Item</Button>
+                            </Accordion.Body>
+                            </Accordion.Item>
+                            <Accordion.Item eventKey="1">
+                            <Accordion.Header>Selling Process</Accordion.Header>
+                            <Accordion.Body>
+                            Directly buy this NFT by paying the specified price without any paper-work!
+                            </Accordion.Body>
+                            </Accordion.Item>
+                        </Accordion>
                 </div>
             )
         }
@@ -71,18 +83,44 @@ class ViewerComponent extends React.Component
             return(
 
                 <div className='main_form'>
-                    <div>Max Bid :: {this.state.data.maxBid} wei</div>
-                    <br/><br/>
                     {
-                         (this.state.data.maxBidder===this.state.account)?(<div>You are the max-bidder , won't be able to place bid right now!</div>):(
-                            <Form onSubmit={this.handleBidSubmit}>
-                                <Form.Group className="mb-3" controlId="formBasicEmail">
-                                    <Form.Label>Enter Your Bid Price (wei)</Form.Label>
-                                    <Form.Control className="me-auto" type="number" placeholder="Your Bid Price..." onChange={this.handlechange}/>
-                                    <Form.Text className="text-muted">This amount will be deducted from your metamask account</Form.Text>
-                                </Form.Group>
-                                <Button variant="primary" className="ms-auto" type="submit">Place Your Bid</Button>
-                            </Form>
+                         (this.state.data.maxBidder===this.state.account)?(
+                            <Accordion defaultActiveKey="0">
+                                <Accordion.Item eventKey="0">
+                                    <Accordion.Header>Bid Info</Accordion.Header>
+                                    <Accordion.Body>
+                                    <div style={{"fontWeight":"bolder"}}>Max Bid:: {this.state.data.maxBid} wei</div>
+                                    <div>YOU ARE THE MAX BIDDER</div>
+                                    </Accordion.Body>
+                                </Accordion.Item>
+                                <Accordion.Item eventKey="1">
+                                    <Accordion.Header>Bid process</Accordion.Header>
+                                    <Accordion.Body>
+                                        You are the max-bidder , in-case someone else places a higher bid , wei equivalent to your bid will be added to your balance.
+                                    </Accordion.Body>
+                                </Accordion.Item>
+                            </Accordion>
+                         ):(
+                            <Accordion defaultActiveKey="0">
+                                <Accordion.Item eventKey="0">
+                                    <Accordion.Header>Bid Info</Accordion.Header>
+                                    <Accordion.Body>
+                                    <Form onSubmit={this.handleBidSubmit}>
+                                        <Form.Group className="mb-3" controlId="formBasicEmail">
+                                            <Form.Label><span style={{fontWeight:"bold"}}>Max Bid :: {this.state.data.maxBid} wei</span></Form.Label>
+                                            <Form.Control type="number" placeholder="Your Bid Price..." onChange={this.handlechange}/>
+                                        </Form.Group>
+                                        <Button variant="primary" type="submit">Place Your Bid</Button>
+                                    </Form>
+                                    </Accordion.Body>
+                                </Accordion.Item>
+                                <Accordion.Item eventKey="1">
+                                    <Accordion.Header>Bid process</Accordion.Header>
+                                    <Accordion.Body>
+                                        Your specified amount will be deducted from your wallet , and will be added to your user-balance(if someone else is max-bidder) for safety purposes.
+                                    </Accordion.Body>
+                                </Accordion.Item>
+                            </Accordion>
                          )
                     }
                 </div>
@@ -90,7 +128,21 @@ class ViewerComponent extends React.Component
         }
         return(
             <div>
-                This Item is Not for Selling or Auction
+               <Accordion defaultActiveKey="0">
+                                <Accordion.Item eventKey="0">
+                                    <Accordion.Header>Asset Info</Accordion.Header>
+                                    <Accordion.Body>
+                                        <div style={{"fontWeight":"bolder" , "fontSize":"30px"}}>SORRY!</div>
+                                     But This Item Is Only For Display Purpose
+                                    </Accordion.Body>
+                                </Accordion.Item>
+                                <Accordion.Item eventKey="1">
+                                    <Accordion.Header>Rules</Accordion.Header>
+                                    <Accordion.Body>
+                                        You can bid or buy it from sale only if the owner of this NFT puts it on sale or on Auction.
+                                    </Accordion.Body>
+                                </Accordion.Item>
+                            </Accordion>
             </div> 
         )
     }

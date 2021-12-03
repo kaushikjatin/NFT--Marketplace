@@ -102,7 +102,7 @@ class CreateToken extends Component
                         event.preventDefault()
                         const name = this.productName.value
                         const image = this.state.file
-                        const description=this.productDescription.value
+                        const description=this.productDescription.value;
                         this.onSubmit(name, image,description)}}>
 
                 <Form.Group className="mb-3" controlId="floatingInput">

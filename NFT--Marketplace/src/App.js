@@ -8,8 +8,9 @@ import Web3 from 'web3';
 import './App.css';
 import Home from './components/home/home.component';
 import UserProfile from '../src/UserProfile/UserProfile';
-import Spinner from 'react-bootstrap/Spinner'
 import MarketCard from './components/marketCard/marketCard';
+import Spinner from './components/spinner/spinner'
+
 
 class App extends Component
 {
@@ -70,9 +71,7 @@ class App extends Component
             <Navbar></Navbar>
             {
               (this.state.spinner)?(
-                <Spinner animation="border" role="status">
-                  <span className="visually-hidden">Loading...</span>
-                </Spinner>
+                <Spinner></Spinner>
               ):(<div/>)
             }
             <Routes>

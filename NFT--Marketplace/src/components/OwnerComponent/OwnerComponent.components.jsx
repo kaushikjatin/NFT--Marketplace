@@ -1,7 +1,8 @@
 import React from "react";
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
-import Stack from 'react-bootstrap/Stack'
+import { Accordion } from "react-bootstrap";
+
 import './OwnerComponent.styles.scss'
 
 class OwnerComponent extends React.Component
@@ -71,42 +72,78 @@ class OwnerComponent extends React.Component
 
     render()
     {
-        if(this.state.data.isOnSale)
+        if(this.state.data.sellPrice!=0)
         {
             return(
-                <Stack direction="horizontal" gap={3}>
-                            <div><span style={{fontWeight:"bold"}}>Sell Price ::</span> {this.state.data.sellPrice} wei</div>
-                            <Button variant="primary" className="ms-auto" onClick={this.handleCancelSale}>Cancel Sale</Button>
-                </Stack>
+                <div>
+                <Accordion defaultActiveKey="0">
+                <Accordion.Item eventKey="0">
+                  <Accordion.Header>Sell Info</Accordion.Header>
+                  <Accordion.Body style={{"height":"150px"}}>
+                      <div style={{"fontSize":"15px" ,"color":"grey"}}>Sell Price</div>
+                      <div style={{"fontSize":"25px" }}>{this.state.data.sellPrice} wei</div>
+                      <Button variant="primary" className="ms-auto" onClick={this.handleCancelSale} style={{"width":"80%"}}>Cancel Sale</Button>
+                  </Accordion.Body>
+                </Accordion.Item>
+                <Accordion.Item eventKey="1">
+                  <Accordion.Header>Selling Process</Accordion.Header>
+                  <Accordion.Body>
+                   Anyone can buy this item for the specified price (without any confirmation from you!)!
+                  </Accordion.Body>
+                </Accordion.Item>
+              </Accordion>
+          </div>
             )
         }
         else if(this.state.data.isBiddable)
         {
             return(
-                <Stack direction="horizontal" gap={3}>
-                          <div>Max Bid :: {this.props.data.maxBid} wei</div>
-                          <Button variant="primary" className="ms-auto" onClick={this.handleAcceptBid}>Accept Bid</Button>
-                </Stack>
+                <div>
+                    <Accordion defaultActiveKey="0">
+                      <Accordion.Item eventKey="0">
+                        <Accordion.Header>Bid Info</Accordion.Header>
+                        <Accordion.Body style={{"height":"150px"}}>
+                            <div style={{"fontSize":"15px" ,"color":"grey"}}>Top Bid</div>
+                            <div style={{"fontSize":"25px" }}>{this.props.data.maxBid} wei</div>
+                            <Button variant="primary" className="ms-auto" onClick={this.handleAcceptBid} style={{"width":"80%"}}>Accept Bid</Button>
+                        </Accordion.Body>
+                      </Accordion.Item>
+                      <Accordion.Item eventKey="1">
+                        <Accordion.Header>Maximum Bidder</Accordion.Header>
+                        <Accordion.Body>
+                          {this.state.data.maxBidder}
+                        </Accordion.Body>
+                      </Accordion.Item>
+                    </Accordion>
+                </div>
             )
         }
         return(
             <div className='main_form'>
-                <Form onSubmit={this.handleSaleSubmit}>
-                    <Form.Group className="mb-3" controlId="formBasicEmail">
-                        <Form.Label><span style={{fontWeight:"bold"}}>Selling Price</span></Form.Label>
-                        <Form.Control type="number" placeholder="Enter Selling Price in wei" onChange={this.handlechange}/>
-                        <Form.Text className="text-muted">
-                         Buyer will pay these ether into your marketplace account
-                        </Form.Text>
-                    </Form.Group>
+                 <Accordion defaultActiveKey="0">
+                      <Accordion.Item eventKey="0">
+                        <Accordion.Header>Get It to Sale</Accordion.Header>
+                        <Accordion.Body>
+                        <Form onSubmit={this.handleSaleSubmit}>
+                            <Form.Group className="mb-3" controlId="formBasicEmail">
+                                <Form.Label><span style={{fontWeight:"bold"}}>Selling Price(wei)</span></Form.Label>
+                                <Form.Control type="number" placeholder="Enter Selling Price in wei" onChange={this.handlechange}/>
+                                <Form.Text className="text-muted">
+                                Buyer will pay these wei into your marketplace account
+                                </Form.Text>
+                            </Form.Group>
+                            <Button variant="primary" type="submit">Put On Sale</Button>
+                        </Form>
+                        </Accordion.Body>
+                      </Accordion.Item>
+                      <Accordion.Item eventKey="1">
+                        <Accordion.Header>Get It To Auction</Accordion.Header>
+                        <Accordion.Body>
+                            <Button variant="primary" onClick={this.handleAuctionClick}>Put On Auction</Button>
+                        </Accordion.Body>
+                      </Accordion.Item>
+                    </Accordion>
 
-                    <Button variant="primary" type="submit">Put On Sale</Button>
-                </Form>
-
-                <br/>
-                <h1>OR</h1>
-                <br/>
-                <Button variant="primary" onClick={this.handleAuctionClick}>Put On Auction</Button>
             </div> 
         )
     }

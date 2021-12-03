@@ -50,7 +50,6 @@ const MarketCardList = (props) => {
             <MarketCard
               name={cardItem.name}
               cid = {cardItem.cid}
-              isOnSale={cardItem.isOnSale}
               sellPrice={cardItem.sellPrice}
               isBiddable={cardItem.isBiddable}
               maxBid={cardItem.maxBid}
