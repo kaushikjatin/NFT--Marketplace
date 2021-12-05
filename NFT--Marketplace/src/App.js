@@ -61,7 +61,7 @@ class App extends Component
      const web3 = window.web3
      const accounts = await web3.eth.getAccounts()
      const balance= await web3.eth.getBalance(accounts[0]).then(result => web3.utils.fromWei(result,"ether"));
-     const contract = new web3.eth.Contract(myContractJson,"0xa7E3e7d814AFB48E5EB8FCe124300F61bd06c769");
+     const contract = new web3.eth.Contract(myContractJson,"0xA1D61926132C50073F6ACF4837CB429337bBCb90");
      const res=await axios.get("http://localhost:3001/users");
      const users_map=new Map();
      for(var i=0;i<res.data.users.length;i++)

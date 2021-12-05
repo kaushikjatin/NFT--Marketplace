@@ -108,7 +108,7 @@ class ViewerComponent extends React.Component
                                     <Form onSubmit={this.handleBidSubmit}>
                                         <Form.Group className="mb-3" controlId="formBasicEmail">
                                             <Form.Label><span style={{fontWeight:"bold"}}>Max Bid :: {this.state.data.maxBid} wei</span></Form.Label>
-                                            <Form.Control type="number" placeholder="Your Bid Price..." min={this.state.data.maxBid+1} onChange={this.handlechange}/>
+                                            <Form.Control type="number" placeholder="Your Bid Price..." min={this.state.data.maxBid} onChange={this.handlechange}/>
                                         </Form.Group>
                                         <Button variant="primary" type="submit">Place Your Bid</Button>
                                     </Form>
