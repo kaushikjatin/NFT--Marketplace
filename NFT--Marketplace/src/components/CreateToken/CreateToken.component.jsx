@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import './CreateToken.styles.scss';
+
 import {pinataApiKey, pinataSecretApiKey,url} from '../../pinataApi';
 import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button'
@@ -7,6 +7,7 @@ import axios from 'axios';
 import { getUsername } from '../../utils/getUsernameFromAddress';
 import { Container } from 'react-bootstrap';
 import HeroSection from '../hero/HeroSection';
+import MarketTab from '../marketCard/marketTap';
 
 class CreateToken extends Component
 {
@@ -38,7 +39,7 @@ class CreateToken extends Component
      this.setState({name:event.target.value})
     };
  
-   async onSubmit(name, image,description) 
+   async onSubmit(name, image,description,file_type) 
      {
        this.props.handlestateofApp("spinner",true);
        const FormData = require("form-data");
@@ -59,7 +60,7 @@ class CreateToken extends Component
  
        if(res.data && res.data.IpfsHash)
        {
-         let Data=await this.state.contract.methods.mint([name, res.data.IpfsHash,description],new Date().getTime()).send({ from:this.state.account ,gasLimit: 3000000});
+         let Data=await this.state.contract.methods.mint([name, res.data.IpfsHash,description,file_type],new Date().getTime()).send({ from:this.state.account ,gasLimit: 3000000});
          Data=Data.events.nftTransaction.returnValues["nfts"]
          const newNote={
           cid1:res.data.IpfsHash,
@@ -93,17 +94,28 @@ class CreateToken extends Component
   {
     
     return (
-    
-     
-      
-        <div className='file_form'>
+    <div className='fullinfo'>
+     <div  >
+      <h4 style={{alignSelf:"left"}}> sample token</h4> 
+    <img
+              
+              alt='Travel Image'
+              src={require("./card.png")}
+              
+            />
+       </div>     
+        
+      <div className='rightinfo' style={{marginTop:"2%"}}>
+        <div className='form '   >
           
             <Form onSubmit={(event) => {
                         event.preventDefault()
                         const name = this.productName.value
                         const image = this.state.file
-                        const description=this.productDescription.value;
-                        this.onSubmit(name, image,description)}}>
+                        const description=this.productDescription.value
+                        const file_type=image["name"].split(".")[1];
+                        this.onSubmit(name, image,description,file_type)}}>
+                        
 
                 <Form.Group className="mb-3" controlId="floatingInput">
                     <Form.Label>Asset Name</Form.Label>
@@ -125,9 +137,11 @@ class CreateToken extends Component
                         Submit
                     </Button>
                 </div>
+            
           </Form>
+          </div>
         </div>
-     
+     </div>
     );
   }
 

@@ -1,4 +1,4 @@
-import {Route,Routes} from 'react-router-dom';
+ import {Route,Routes} from 'react-router-dom';
 import CreateToken from './components/CreateToken/CreateToken.component';
 import Navbar from './components/NavBar/NavBar.component';
 import MarketPlace from "./containers/marketPlace.jsx";
@@ -10,6 +10,8 @@ import Home from './components/home/home.component';
 import UserProfile from '../src/UserProfile/UserProfile';
 import MarketCard from './components/marketCard/marketCard';
 import Spinner from './components/spinner/spinner'
+import axios from 'axios';
+
 
 
 class App extends Component
@@ -59,9 +61,20 @@ class App extends Component
      const web3 = window.web3
      const accounts = await web3.eth.getAccounts()
      const balance= await web3.eth.getBalance(accounts[0]).then(result => web3.utils.fromWei(result,"ether"));
-     const contract = new web3.eth.Contract(myContractJson,"0x20C899F27F6700F6E0928d94Fc8625528cEE425B");
+     const contract = new web3.eth.Contract(myContractJson,"0xa7E3e7d814AFB48E5EB8FCe124300F61bd06c769");
+     const res=await axios.get("http://localhost:3001/users");
+     const users_map=new Map();
+     for(var i=0;i<res.data.users.length;i++)
+     {
+       var info={
+         UserName:res.data.users[i].username,
+         UserDesignation:res.data.users[i].designation
+       }
+       users_map.set(res.data.users[i].id,info);
+     }
+     console.log("zjhvsivd",users_map);
      const Data= await contract.methods.alltokens().call();
-     this.setState({ contract :contract , account:accounts[0], data:Data , balance:balance})
+     this.setState({ contract :contract , account:accounts[0], data:Data , balance:balance , users:users_map});
    }
 
   render()
@@ -77,12 +90,12 @@ class App extends Component
             <Routes>
                 <Route path='/upload' element={<CreateToken contract={this.state.contract} account={this.state.account} handlestateofApp={this.handlestateofApp}/>}></Route>
                 <Route path='/card' element={<MarketCard/>}></Route>
-                <Route  path='/' element={<Home contract={this.state.contract} account={this.state.account} data={this.state.data}></Home>} ></Route>
-                <Route  path='/Home' element={<Home contract={this.state.contract} account={this.state.account} data={this.state.data}></Home>} ></Route>
-                <Route exact path='/all_tokens' element={<MarketPlace contract={this.state.contract} account={this.state.account} data={this.state.data}></MarketPlace>} ></Route>
-                <Route exact path='/profile' element={<UserProfile contract={this.state.contract} account={this.state.account} balance={this.state.balance} data={this.state.data.filter((nft)=>{return nft.owner===this.state.account})}></UserProfile>} ></Route>
-                <Route exact path='/your_tokens' element={<MarketPlace contract={this.state.contract} account={this.state.account} data={this.state.data.filter((nft)=>{return nft.owner===this.state.account})} ></MarketPlace>}></Route>
-                <Route exact path='/all_tokens/:index' element={<ItemPage contract={this.state.contract} account={this.state.account} data={this.state.data} handlestateofApp={this.handlestateofApp}/>}></Route>
+                <Route path='/' element={<Home contract={this.state.contract} users={this.state.users} account={this.state.account} data={this.state.data}></Home>} ></Route>
+                <Route path='/Home' element={<Home contract={this.state.contract} users={this.state.users} account={this.state.account} data={this.state.data}></Home>} ></Route>
+                <Route exact path='/all_tokens' element={<MarketPlace contract={this.state.contract} account={this.state.account} data={this.state.data} users={this.state.users}></MarketPlace>} ></Route>
+                <Route exact path='/profile' element={<UserProfile contract={this.state.contract} account={this.state.account} balance={this.state.balance}  users={this.state.users} data={this.state.data.filter((nft)=>{return nft.owner===this.state.account})}></UserProfile>} ></Route>
+                <Route exact path='/your_tokens' element={<MarketPlace contract={this.state.contract} account={this.state.account} users={this.state.users} data={this.state.data.filter((nft)=>{return nft.owner===this.state.account})} ></MarketPlace>}></Route>
+                <Route exact path='/all_tokens/:index' element={<ItemPage contract={this.state.contract} account={this.state.account}  data={this.state.data} users={this.state.users} handlestateofApp={this.handlestateofApp}/>}></Route>
             </Routes>
            </div>
            )

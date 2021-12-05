@@ -27,7 +27,7 @@ const MarketTab = (props) => {
         <div>
           <TabPanel value={value} index={0}>
             
-            {props.data.length ? <MarketCardList marketCards={props.data} /> : <>No Items Found</>}
+            {props.data.length ? <MarketCardList marketCards={props.data} users={props.users}/> : <>No Items Found</>}
           </TabPanel>
         </div>
       )}

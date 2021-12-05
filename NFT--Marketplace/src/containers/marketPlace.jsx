@@ -13,7 +13,8 @@ class MarketPlace extends Component {
    this.state={
                account:props.account,
                contract:props.contract,
-               data:null
+               data:null,
+               users:null
              };
              
              
@@ -27,7 +28,8 @@ static getDerivedStateFromProps(nextProps) {
   return {
    contract:nextProps.contract,
    account:nextProps.account,
-   data:nextProps.data
+   data:nextProps.data,
+   users:nextProps.users
   };
  }
  
@@ -53,7 +55,7 @@ static getDerivedStateFromProps(nextProps) {
               <Typography variant="h4" style={{ marginBottom: 20, marginTop: 30 }}>MarketPlace</Typography>
               </div>
               
-              <MarketTab data={this.state.data} style={{ marginTop: 10 }} /> 
+              <MarketTab data={this.state.data} users={this.state.users} style={{ marginTop: 10 }} /> 
             </div>
           ):
           (   <div></div>)

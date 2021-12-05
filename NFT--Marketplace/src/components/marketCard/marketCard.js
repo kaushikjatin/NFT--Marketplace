@@ -1,8 +1,8 @@
-import React ,{useEffect,useState} from "react";
+import React ,{useEffect} from "react";
 import { withStyles, makeStyles } from "@material-ui/core/styles";
 import {Card, CardActionArea, CardMedia, Tooltip, Typography} from "@material-ui/core/";
-import AccountCircleIcon from "@material-ui/icons/AccountCircle";
-import PanToolSharpIcon from "@material-ui/icons/PanToolSharp";
+import { BsFillPersonFill } from "react-icons/bs";
+import {BiDish} from 'react-icons/bi'
 import LocalOfferSharpIcon from "@material-ui/icons/LocalOfferSharp";
 import { Grid} from "@material-ui/core";
 import FormControlLabel from '@material-ui/core/FormControlLabel';
@@ -10,6 +10,9 @@ import Checkbox from '@material-ui/core/Checkbox';
 import Favorite from '@material-ui/icons/Favorite';
 import FavoriteBorder from '@material-ui/icons/FavoriteBorder';
 import axios from "axios";
+import playIcon from './PlayIcon.jpeg'
+import docIcon from './DocIcon.jpeg'
+
 
 const useStyles = makeStyles({
   root: {
@@ -61,7 +64,7 @@ const MyTooltip = withStyles((theme) => ({
   tooltip: {fontSize: 20},
 }))(Tooltip);
 
-const MarketCard = ({name,cid,sellPrice,isBiddable,maxBid,index}) => {
+const MarketCard = ({name,cid,sellPrice,isBiddable,maxBid,index,owner,creator,designation,file_type}) => {
   const classes = useStyles();
   
   const [state, setState] = React.useState([{
@@ -127,12 +130,12 @@ const MarketCard = ({name,cid,sellPrice,isBiddable,maxBid,index}) => {
             <Grid container>
               <CardMedia
                 className={classes.media}
-                image={"https://gateway.pinata.cloud/ipfs/"+cid} 
+                image={(file_type==='music')?(playIcon):((file_type==='doc')?(docIcon):("https://gateway.pinata.cloud/ipfs/"+cid))} 
                 title={name}
               />
             </Grid>
-            <Grid container direction="column" style={{ marginTop: 15 }}>
-              <Grid item style={{ marginLeft: 15, marginBottom: 6 }}>
+            <Grid container direction="column" style={{ marginTop: 10 }}>
+              <Grid item style={{ marginLeft: 15, marginBottom: 3 }}>
                 
                 <Typography    gutterbottom="true" variant="h6" component="h1">
                   {name}
@@ -140,6 +143,41 @@ const MarketCard = ({name,cid,sellPrice,isBiddable,maxBid,index}) => {
               </Grid>
               <Grid item style={{ alignSelf: "flex-start", marginLeft: 15 }}>
                 
+              <div style={{ textAlign: "left" }}>
+                  <div>
+                    <BsFillPersonFill
+                      style={{
+                        verticalAlign: "middle",
+                        marginRight: 5,
+                        fontSize: 20,
+                      }}
+                    />
+
+                      <Typography variant="caption">
+                        Creator: {creator} 
+                      </Typography>
+                  
+                  </div>
+                </div>
+
+                <div style={{ textAlign: "left" }}>
+                  <div>
+                    <BsFillPersonFill
+                      style={{
+                        verticalAlign: "middle",
+                        marginRight: 5,
+                        fontSize: 20,
+                      }}
+                    />
+                   
+
+                      <Typography variant="caption">
+                        Designation: {designation.slice(0,5)+"..."} 
+                      </Typography>
+                  
+                  </div>
+                </div>
+
                 <div style={{ textAlign: "left" }}>
                   <div>
                     <LocalOfferSharpIcon
@@ -156,9 +194,10 @@ const MarketCard = ({name,cid,sellPrice,isBiddable,maxBid,index}) => {
                     </MyTooltip>
                   </div>
                 </div>
-                <div style={{ marginTop: 7, textAlign: "left" }}>
+
+                <div style={{textAlign: "left" }}>
                   <div>
-                    <PanToolSharpIcon
+                    <BiDish
                       style={{
                         verticalAlign: "middle",
                         marginRight: 5,
@@ -172,7 +211,6 @@ const MarketCard = ({name,cid,sellPrice,isBiddable,maxBid,index}) => {
                     </MyTooltip>
                   </div>
                 </div>
-               
               </Grid>
             </Grid>
           </CardActionArea>
@@ -181,11 +219,8 @@ const MarketCard = ({name,cid,sellPrice,isBiddable,maxBid,index}) => {
           
 
           <div style={{
-            marginLeft: "70%",
-          
+            marginLeft: "50%",
             display: 'inline-block',
-            justifyContent: 'normal',
-            spacing: '20px',
           }}>
           
           
@@ -195,8 +230,6 @@ const MarketCard = ({name,cid,sellPrice,isBiddable,maxBid,index}) => {
                         checkedIcon={<Favorite />  }
                 name="checkedH"  onChangeCapture={(e) => {
                     selectShortlistedApplicant(e)}} />}
-            
-              
             ></FormControlLabel>
             {(state!=null)?(state.count):(0)}
           

@@ -35,7 +35,9 @@ const MarketCardList = (props) => {
 
     return 1;
   };
+ 
 
+  console.log("dxsfjlvhdo",props)
   return (
     <ImageList
       gap={15}
@@ -54,6 +56,10 @@ const MarketCardList = (props) => {
               isBiddable={cardItem.isBiddable}
               maxBid={cardItem.maxBid}
               index={cardItem.token_id}
+              owner={(props.users.get(cardItem.owner))?(props.users.get(cardItem.owner).UserName):(cardItem.creator.slice(0,5)+"...")}
+              creator={(props.users.get(cardItem.creator))?(props.users.get(cardItem.creator).UserName):(cardItem.creator.slice(0,5)+"...")}
+              designation={(props.users.get(cardItem.owner))?(props.users.get(cardItem.owner).UserDesignation):("Anonymous")}
+              file_type={(cardItem.file_type=='mp3')?('music'):((cardItem.file_type=='jpeg' || cardItem.file_type=='jpg' || cardItem.file_type=='png' || cardItem.file_type=='jfif' || cardItem.file_type=='gif')?('image'):('doc'))}
             />
           </ImageListItem>
         );

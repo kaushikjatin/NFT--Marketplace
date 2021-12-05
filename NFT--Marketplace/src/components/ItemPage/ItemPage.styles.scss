@@ -29,6 +29,12 @@
             display: flex;
             justify-content: space-around;
 
+            .creator 
+            {
+                display: flex;
+                flex-direction: column;
+            }
+
         }
 
         .description 

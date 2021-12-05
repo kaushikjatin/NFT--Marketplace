@@ -46,10 +46,10 @@ static getDerivedStateFromProps(nextProps) {
               
               <Carousel>
         <Carousel.Item height={200}>
-          <MarketTab data={this.state.data.slice(0,4)} style={{ marginTop: 10 }} /> 
+          <MarketTab data={this.state.data.slice(0,4)} users={this.props.users} style={{ marginTop: 10 }} /> 
         </Carousel.Item>
         <Carousel.Item >
-          <MarketTab data={this.state.data.slice(4,8)} style={{ marginTop: 10 }} /> 
+          <MarketTab data={this.state.data.slice(4,8)} users={this.props.users} style={{ marginTop: 10 }} /> 
         </Carousel.Item>
         
       </Carousel>
