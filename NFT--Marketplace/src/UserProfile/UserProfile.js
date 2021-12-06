@@ -46,10 +46,10 @@ class UserProfile extends React.Component
     async complete_all_data()
     {
       let balance=await this.getUser();
+      console.log("akjbcsdkbsd",balance);
       let saleCount=0,bidCount=0,username="Anonymous",designation="Anonymous";
       username=(this.state.users.get(this.state.account))?(this.state.users.get(this.state.account).UserName):("Anonymous");
       designation=(this.state.users.get(this.state.account))?(this.state.users.get(this.state.account).UserDesignation):("Anonymous");
-      console.log("sdjhikcbs",username)
       for(var i=0;i < this.state.data.length; i++)
       {
         if(this.state.data[i][2] === true)
@@ -67,7 +67,7 @@ class UserProfile extends React.Component
     async getUser(){
         if(this.state.account && this.state.contract){
             const userName_temp= await getUsername(this.state.contract,this.state.account)
-            return userName_temp.userBalance
+            return (userName_temp.userBalance==undefined)?(0):(userName_temp.userBalance)
         }
         else{
             window.alert("no contract or account");
